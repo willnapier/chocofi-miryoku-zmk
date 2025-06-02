@@ -1,0 +1,33 @@
+// Copyright 2022 Manna Harbour
+// https://github.com/manna-harbour/miryoku
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/mouse.h>
+#include "../miryoku/custom_config.h"
+#include "miryoku_babel/miryoku_layer_alternatives.h"
+#include "miryoku_mousekeys.h"
+
+/ {
+    keymap {
+        compatible = "zmk,keymap";
+        default_layer {
+            bindings = <MIRYOKU_ALTERNATIVES_BASE_COLEMAKDH>;
+        };
+        nav_layer {
+            bindings = <MIRYOKU_ALTERNATIVES_NAV>;
+        };
+        media_layer {
+            bindings = <MIRYOKU_ALTERNATIVES_MEDIA>;
+        };
+        mouse_layer {
+            bindings = <MIRYOKU_ALTERNATIVES_MOUSE>;
+        };
+        sym_layer {
+            bindings = <MIRYOKU_ALTERNATIVES_SYM>;
+        };
+        num_layer {
+            bindings = <MIRYOKU_ALTERNATIVES_NUM>;
+        };
+    };
+};

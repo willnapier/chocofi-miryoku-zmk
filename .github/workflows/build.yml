@@ -2,18 +2,9 @@ name: Build ZMK Firmware
 on:
   workflow_call:
     inputs:
-      board:
-        description: 'Board to build for'
-        required: true
-        type: string
-      shield:
-        description: 'Shield to build for'
-        required: true
-        type: string
-      kconfig:
-        description: 'Additional Kconfig options'
-        required: false
-        type: string
+      board: { required: true, type: string }
+      shield: { required: true, type: string }
+      kconfig: { required: false, type: string }
 
 jobs:
   build:
@@ -22,21 +13,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          path: config
 
-      - name: Verify west.yml
+      - name: Clone ZMK
         run: |
-          ls -l west.yml || { echo "west.yml not found"; exit 1; }
-
-      - name: Setup ZMK
-        run: |
-          west init -l .
+          git clone https://github.com/zmkfirmware/zmk zmk
+          cd zmk
+          west init -l app
           west update
 
       - name: Build firmware
         run: |
+          cd zmk/app
           west build -p -b ${{ inputs.board }} -- -DSHIELD=${{ inputs.shield }} -DCONFIG_ZMK_CONFIG=$GITHUB_WORKSPACE/config
           if [ -n "${{ inputs.kconfig }}" ]; then
-            echo "${{ inputs.kconfig }}" >> build/zephyr/.config
+            echo "${{ inputs.kconfig }}" >> build/zephyr/*.config
             west build -p -b ${{ inputs.board }} -- -DSHIELD=${{ inputs.shield }} -DCONFIG_ZMK_CONFIG=$GITHUB_WORKSPACE/config
           fi
 
@@ -44,6 +36,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: firmware-${{ inputs.board }}-${{ inputs.shield }}
-          path: |
-            build/zephyr/*.uf2
-            build/zephyr/*.bin
+          path: zmk/app/build/zephyr/*.uf2

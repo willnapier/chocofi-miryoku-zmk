@@ -23,6 +23,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Verify west.yml
+        run: |
+          ls -l west.yml || { echo "west.yml not found"; exit 1; }
+
       - name: Setup ZMK
         run: |
           west init -l .

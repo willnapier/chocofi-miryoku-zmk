@@ -29,7 +29,8 @@ jobs:
       - name: Setup ZMK
         run: |
           west init -l .
-          west update
+          west update || { echo "west update failed"; ls -l; exit 1; }
+          ls -l zmk/app || { echo "zmk/app not found"; ls -l zmk; exit 1; }
 
       - name: Build firmware
         run: |

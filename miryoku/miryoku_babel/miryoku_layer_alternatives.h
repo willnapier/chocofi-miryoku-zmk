@@ -304,10 +304,10 @@ U_STU,             &kp RALT,          &u_to_U_SYM,       &u_to_U_MOUSE,     U_NA
 U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              U_BTN2,            U_BTN1,            U_BTN3,            U_NP,              U_NP
 
 #define MIRYOKU_ALTERNATIVES_MOUSE \
-&none &none &none &none &none   &none &none &none &none &none \
-&kp LCTRL &kp LALT &kp LGUI &kp LSHFT &none   &none U_MS_L U_MS_D U_MS_U U_MS_R \
-&none &kp RALT &none &none &none   &none U_WH_L U_WH_D U_WH_U U_WH_R \
-&none &none &none &none U_BTN1   U_BTN2 U_BTN1 U_BTN3 &none &none
+U_MS_U, U_MS_D, U_MS_L, U_MS_R, U_BTN1, U_BTN2, U_MS_U, U_MS_D, U_MS_L, U_MS_R, \
+U_WH_U, U_WH_D, U_WH_L, U_WH_R, U_BTN3, U_BTN4, U_WH_U, U_WH_D, U_WH_L, U_WH_R, \
+U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, U_NA, \
+U_NA, U_NA, U_NA, U_NA, U_NA, U_NA
 
 #define MIRYOKU_ALTERNATIVES_MEDIA_INVERTEDT_FLIP \
 U_RGB_HUI,         U_RGB_SAI,         &kp C_VOL_UP,      U_RGB_BRI,         U_RGB_TOG,         U_NA,              &u_to_U_BASE,      &u_to_U_EXTRA,     &u_to_U_TAP,       U_BOOT,            \

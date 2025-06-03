@@ -1,28 +1,45 @@
-# Copyright 2022 Manna Harbour
-# https://github.com/manna-harbour/miryoku
-
-name: Build Chocofi ZMK Firmware
+name: Build ZMK Firmware
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_call:
+    inputs:
+      board:
+        description: 'Board to build for'
+        required: true
+        type: string
+      shield:
+        description: 'Shield to build for'
+        required: true
+        type: string
+      kconfig:
+        description: 'Additional Kconfig options'
+        required: false
+        type: string
 
 jobs:
   build:
-    uses: ./.github/workflows/main.yml
-    secrets: inherit
-    with:
-      board: '["nice_nano_v2"]'
-      shield: '["corne_left", "corne_right"]'
-      alphas: '["default"]'
-      extra: '["default"]'
-      tap: '["default"]'
-      nav: '["default"]'
-      clipboard: '["default"]'
-      layers: '["default"]'
-      mapping: '["default"]'
-      custom_config: '["default"]'
-      kconfig: '["default"]'
-      branches: '["default"]'
-      modules: '["default"]'
+    runs-on: ubuntu-latest
+    container: zmkfirmware/zmk-build-arm:stable
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup ZMK
+        run: |
+          west init -l .
+          west update
+
+      - name: Build firmware
+        run: |
+          west build -p -b ${{ inputs.board }} -- -DSHIELD=${{ inputs.shield }} -DCONFIG_ZMK_CONFIG=$GITHUB_WORKSPACE/config
+          if [ -n "${{ inputs.kconfig }}" ]; then
+            echo "${{ inputs.kconfig }}" >> build/zephyr/.config
+            west build -p -b ${{ inputs.board }} -- -DSHIELD=${{ inputs.shield }} -DCONFIG_ZMK_CONFIG=$GITHUB_WORKSPACE/config
+          fi
+
+      - name: Archive firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-${{ inputs.board }}-${{ inputs.shield }}
+          path: |
+            build/zephyr/*.uf2
+            build/zephyr/*.bin

@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    uses: zmk-firmware/zmk/.github/workflows/build.yml@main
+    uses: ./.github/workflows/build.yml
     strategy:
       fail-fast: false
       matrix:
@@ -28,5 +28,4 @@ jobs:
     with:
       board: ${{ matrix.board }}
       shield: ${{ matrix.shield }}
-      branches: zmkfirmware/zmk/main
       kconfig: ${{ matrix.kconfig }}

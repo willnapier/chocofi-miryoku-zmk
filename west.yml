@@ -9,7 +9,7 @@ manifest:
     - name: zmk
       remote: zmkfirmware
       revision: main
-      import: app/west.yml
+      path: zmk
     - name: zephyr
       remote: zephyrproject-rtos
       revision: v3.5.0
